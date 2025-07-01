@@ -1,15 +1,8 @@
-#include "shapes.inc"		// 基本形状の組み込み
-#include "colors.inc"		// 色名の組み込み
-#include "textures.inc"		// 様々なテクスチャの組み込み
-#include "woods.inc"		// 木目テクスチャの組み込み
-#include ""
+#include "shapes.inc"		
+#include "colors.inc"		
+#include "textures.inc"		
+#include "woods.inc"
 
-global_settings { charset utf8 }	// 日本語用の設定
-
-// ---- パーツ定義 -----------------------------------------------------
-
-// 脚のパーツ定義
-// （同じ形を複数個使うので，定義しておくと効率的）
 #declare Leg = intersection {
 	object { Cone_Y scale <0.05, 2.0, 0.05> translate 2.0*y }
 	object { Disk_Y scale 0.65*y }
@@ -18,15 +11,10 @@ global_settings { charset utf8 }	// 日本語用の設定
   texture { DMFWood4 scale 0.3 rotate 91*x }
 }
 
-// 天板の端部のパーツ定義
-// （同じ形を複数個使うので，定義しておくと効率的）
 #declare Edge_X = object { Disk_X scale <0.55, 0.10, 0.05> }	// 前後
 #declare Edge_Z = object { Disk_Z scale <0.05, 0.10, 0.4> }	// 左右
 #declare Corner = object { Sphere scale <0.05, 0.1, 0.05> }	// 角
 
-// 天板のパーツ定義
-// （一枚だけしか使わないけど，全体の組み立てが分かり易くなるので，
-// Table とは別に定義しておく）
 #declare Top = intersection {
 	merge {
 		object { Cube scale <0.55, 0.10, 0.4> }	// 本体
@@ -50,30 +38,32 @@ global_settings { charset utf8 }	// 日本語用の設定
 
 }
 
-// テーブルの定義
-// （すべての部品を事前に定義しておいたので，コードが短く分かり易いよね？）
-#declare Table = merge {
-	object { Top translate 0.65*y }			// 天板
 
-	object { Leg translate < 0.55, 0.0,  0.4> }	// 脚
-	object { Leg translate < 0.55, 0.0, -0.4> }
-	object { Leg translate <-0.55, 0.0,  0.4> }
-	object { Leg translate <-0.55, 0.0, -0.4> }
+
+#declare Stool_Seat = union {
+  // differenceで木の円盤から中央をくり抜く
+  difference {
+    cylinder { <0, 0.45, 0>, <0, 0.5, 0>, 0.2 material { M_Wood } }
+    cylinder { y*0.4, y*0.51, 0.08 }
+  }
+  // くり抜いた中央にレジンをはめ込む
+  cylinder { <0, 0.45, 0>, <0, 0.5, 0>, 0.08 material { M_Resin } }
 }
 
-/* #declare cup = difference {
-    object { Disk_Y scale 0.4 translate 2*y }
-    object { Disk_Y scale 0.3 translate 3*y }
-    pigment {color white }
-} */
+// 椅子の脚
+#declare Stool_Leg = cylinder {
+  <0, 0, 0>, <0, 0.45, 0>, 0.015
+  material { M_Steel }
+}
 
-// ---- シーン ---------------------------------------------------------
-
-// テーブルの配置
-object { Table }
-//object { cup }
-// 床
-object { Plane_XZ pigment { color Gray } }
+// 椅子本体の組み立て
+#declare Matching_Stool = union {
+  object { Stool_Seat }
+  // 3本の脚を120度ずつ回転させて配置
+  object { Stool_Leg rotate z*-15 translate <0.12, 0, 0> }
+  object { Stool_Leg rotate z*-15 translate <0.12, 0, 0> rotate y*120 }
+  object { Stool_Leg rotate z*-15 translate <0.12, 0, 0> rotate y*240 }
+}
 
 // 座標軸
 merge {
@@ -98,4 +88,3 @@ camera{
 	look_at	<0.0, 0.50, 0.0>	// 注目先の位置
 	angle 5				// カメラの視野角
 }
-
