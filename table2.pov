@@ -49,11 +49,19 @@ global_settings { charset utf8 }	// 日本語用の設定
 
 }
 
+#declare handrail = difference{
+	object { Cube scale 0.2*x }
+	object { Cube scale 2*x translate <0.0, 0.3, 0.3> }
+	pigment {color White}
+}
+
 // テーブルの定義
 // （すべての部品を事前に定義しておいたので，コードが短く分かり易いよね？）
 #declare Table = merge {
 	object { Top translate 0.65*y }			// 天板
-
+	object { Top scale 0.98 translate <0.0, 0.38, -1.1>  rotate 90.0*x } //背もたれ
+	object { handrail scale 0.2 rotate 90*x translate <0.55, 0.85, 0.18> }
+	object { handrail scale 0.2 rotate 90*x translate <-0.55, 0.85, 0.18> }
 	object { Leg translate < 0.55, 0.0,  0.4> }	// 脚
 	object { Leg translate < 0.55, 0.0, -0.4> }
 	object { Leg translate <-0.55, 0.0,  0.4> }
@@ -71,6 +79,7 @@ global_settings { charset utf8 }	// 日本語用の設定
 // テーブルの配置
 object { Table }
 //object { cup }
+
 // 床
 object { Plane_XZ pigment { color Gray } }
 
@@ -93,8 +102,8 @@ light_source {
 
 // カメラ
 camera{
-	location <10.0, 10.0, -15.0>	// カメラの位置
-	look_at	<0.0, 0.50, 0.0>	// 注目先の位置
+	location <15.0, 15.0, -30.0>	// カメラの位置
+	look_at	<0.0, 0.80, 0.0>	// 注目先の位置
 	angle 5				// カメラの視野角
 }
 
