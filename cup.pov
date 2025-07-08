@@ -25,7 +25,7 @@ light_source {
 }
 
 camera {
-  location <10.0, 10.0, -15.0>
+  location <10.0, 10.0, -40.0>
   look_at <0.0, 0.50, 0.0>
   angle 5
 }
