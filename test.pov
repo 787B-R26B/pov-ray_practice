@@ -3,14 +3,36 @@
 #include "textures.inc"
 #include "woods.inc"
 
-object {
+/* object {
         Cube 
         scale 0.8 
         pigment { color White }
         }
+*/
 
 // 床
 object { Plane_XZ pigment { color Gray } }
+
+
+//object { Cylinder_Z scale 0.1 translate <0.4, 0.2, 0.2> pigment {color White }}
+
+object { 
+cylinder { <0.5,0,-2>, <0.5,0,2>, 0.03 }
+texture { pigment { color White}}
+translate 0.5*y
+}
+
+object {
+	cylinder { <-0.5,0,-2> ,<-0.5, 0,2>,0.03 }
+	texture { pigment {color White }}
+	translate 0.5*y
+}
+
+object {
+	cylinder { <-0.5 ,0.5, 0> , <0.5,0.5,0>,0.03 }
+	texture {pigment {color White}}
+	
+}
 
 // 座標軸
 merge {
@@ -30,7 +52,7 @@ light_source {
 }
 
 camera{
-	location <15.0, 15.0, -30.0>	// カメラの位置
+	location <10.0, 15.0, -40.0>	// カメラの位置
 	look_at	<0.0, 0.80, 0.0>	// 注目先の位置
 	angle 5				// カメラの視野角
 }
