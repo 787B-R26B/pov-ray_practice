@@ -3,7 +3,7 @@
 #include "pictaro25.inc"
 #include "woods.inc"
 
-/*#declare menko = union {
+/*#declare naruko = object {
 
 }
 */
